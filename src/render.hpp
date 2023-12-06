@@ -21,10 +21,9 @@ public:
         m_currentPath(fs::current_path()),
         m_selectedEntry(fs::path{})
     {
-        LoadFont();
+
     }
     void Draw(std::string_view label);
-    void LoadFont();
 
 private:
     void DrawMenu();
