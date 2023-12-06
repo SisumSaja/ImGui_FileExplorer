@@ -119,6 +119,8 @@ int main(int, char **)
 
         end_cycle(window);
     }
+
+    window_obj.CleanupFonts();
     ImPlot::DestroyContext();
 
     // Cleanup
