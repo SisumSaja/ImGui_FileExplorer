@@ -23,10 +23,6 @@ include(ConfigSafeGuards)
 
 # add_clang_format_target() # needs python
 
-#set (VCPKG_DIR ${CMAKE_SOURCE_DIR}/external/vcpkg)
-# you can set any other vcpkg installation on your system
-#set (VCPKG_DIR F:/Projects/c++/ImGUI/vcpkg )
-#include(${VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake)
 set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 

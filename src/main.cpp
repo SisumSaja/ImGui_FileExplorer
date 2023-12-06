@@ -14,12 +14,10 @@
 
 #include "render.hpp"
 
-
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) &&                                 \
     !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
-
 
 constexpr auto WINDOW_WIDTH = std::uint32_t{1280};
 constexpr auto WINDOW_HEIGHT = std::uint32_t{720};
@@ -38,7 +36,7 @@ void start_cycle()
 void end_cycle(GLFWwindow *const window)
 {
     const auto clear_color =
-            ImVec4(30.0F / 255.0F, 30.0F / 255.0F, 30.0F / 255.0F, 1.00f);
+        ImVec4(30.0F / 255.0F, 30.0F / 255.0F, 30.0F / 255.0F, 1.00f);
     int display_w = 0;
     int display_h = 0;
     glfwGetFramebufferSize(window, &display_w, &display_h);
@@ -99,7 +97,6 @@ int main(int, char **)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
-
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);

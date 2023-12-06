@@ -21,9 +21,10 @@ public:
         m_currentPath(fs::current_path()),
         m_selectedEntry(fs::path{})
     {
-        
+        LoadFont();
     }
     void Draw(std::string_view label);
+    void LoadFont();
 
 private:
     void DrawMenu();
@@ -35,6 +36,7 @@ private:
     fs::path m_currentPath;
     fs::path m_selectedEntry;
     std::stack<fs::path>m_previousPath;
+    ImFont *m_IconFont = nullptr;
 };
 
 void render(WindowClass &window_obj);
