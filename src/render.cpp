@@ -1,28 +1,26 @@
+// render.cpp
 #include <iostream>
 #include <fmt/format.h>
 #include <implot.h>
 
 #include "render.hpp"
 #include "font.hpp"
-#include "font_awesome.cpp"
 #include "font_awesome.h"
-
-
+#include "imgui_impl_opengl3_loader.h"
 
 void WindowClass::Draw(std::string_view label)
 {
     constexpr static auto windowFlags =
         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
-    //set ImGUI size
+    // set ImGUI size
     constexpr static auto windowSize = ImVec2(1280.0f, 720.0f);
-    //set ImGUI position
+    // set ImGUI position
     constexpr static auto windowsPos = ImVec2(0.0f, 0.0f);
 
-    //ImGUI size
+    // ImGUI size
     ImGui::SetNextWindowSize(windowSize);
-    //ImGUI position
+    // ImGUI position
     ImGui::SetNextWindowPos(windowsPos);
-
     ImGui::Begin(label.data(), nullptr, windowFlags);
 
     DrawMenu();
@@ -31,6 +29,23 @@ void WindowClass::Draw(std::string_view label)
     DrawFilter();
 
     ImGui::End();
+}
+
+ImFont* WindowClass::InitializeFonts()
+{
+    ImGuiIO &io = ImGui::GetIO();
+    io.LogFilename = nullptr;
+    io.IniFilename = nullptr;
+    io.Fonts->AddFontFromMemoryTTF(font_roboto, sizeof(font_roboto), 18.0f);
+    
+    ImFontConfig iconsConfig;
+    iconsConfig.MergeMode = true;
+    iconsConfig.PixelSnapH = true;
+    iconsConfig.OversampleH = 3;
+    iconsConfig.OversampleV = 3;
+
+    static const ImWchar iconRanges[]{0xf00, 0xf3ff, 0};
+    return io.Fonts->AddFontFromMemoryCompressedTTF(font_awesome_data, font_awesome_size, 18.0f, &iconsConfig, iconRanges);
 }
 
 
@@ -44,9 +59,10 @@ void WindowClass::DrawMenu()
         }
     }
 
-    //current location
+    // current location
     ImGui::TextColored(ImVec4(0.f, 255.f, 255.f, 1.f), "Current Directory: %s", m_CurrentPath.string().c_str());
 }
+
 void WindowClass::DrawContent()
 {
     
@@ -55,18 +71,21 @@ void WindowClass::DrawContent()
         const bool b_File = entry.is_regular_file();
         const bool b_Selected = entry.path() == m_SelectedEntry;
         std::string entryName = entry.path().filename().string();
-
-        ImGuiIO &io = ImGui::GetIO();
-        io.Fonts->AddFontFromMemoryTTF(font_roboto, sizeof(font_roboto), 18.0f);
-        io.LogFilename = nullptr;
-        io.IniFilename = nullptr;
-
+        
         if (b_Directory) {
+
+            ImGui::PushFont(iconsFont);
             ImGui::TextColored(ImVec4(255.f, 255.f, 0.f, 1.f), "%s ", ICON_FA_FOLDER);
+            ImGui::PopFont();
+
             ImGui::SameLine();
             entryName = entryName;
         } else if (b_File) {
+
+            ImGui::PushFont(iconsFont);
             ImGui::TextColored(ImVec4(0.f, 0.f, 255.f, 1.f), "%s ", ICON_FA_FILE);
+            ImGui::PopFont();
+
             ImGui::SameLine();
             entryName = entryName;
         }
@@ -78,19 +97,29 @@ void WindowClass::DrawContent()
             m_SelectedEntry = entry.path();
         }
     }
-    
 }
+
 void WindowClass::DrawActions()
 {
-
 }
+
 void WindowClass::DrawFilter()
 {
-
 }
 
+void WindowClass::CleanupFonts()
+{
+    ImGuiIO &io = ImGui::GetIO();
+    io.Fonts->Clear();
+}
+
+WindowClass::~WindowClass()
+{
+    CleanupFonts();
+}
 
 void render(WindowClass &window_obj)
 {
     window_obj.Draw("File Explorer");
+
 }

@@ -19,23 +19,29 @@ public:
     WindowClass() :
         m_CurrentPath(fs::current_path()),
         m_SelectedEntry(fs::path{}),
-        m_IconFont(nullptr)
+        iconsFont(InitializeFonts())
     {
-
+        
     }
+    ~WindowClass();
+
     void Draw(std::string_view label);
+    ImFont* InitializeFonts();
+    ImFont* iconsFont;
+    void CleanupFonts();
 
 private:
     void DrawMenu();
     void DrawContent();
     void DrawActions();
     void DrawFilter();
+    
 
 private:
-    fs::path m_CurrentPath;
-    fs::path m_SelectedEntry;
-    std::stack<fs::path> m_PreviousPath;
-    ImFont *m_IconFont;
+    fs::path m_currentPath;
+    fs::path m_selectedEntry;
+    std::stack<fs::path>m_previousPath;
+    ImFont *m_IconFont = nullptr;
 };
 
 void render(WindowClass &window_obj);
