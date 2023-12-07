@@ -34,10 +34,6 @@ public:
     void Draw(std::string_view label);
     static void render(WindowClass &window_obj);
     bool Initialize();
-    float GetCPUUsage();
-    size_t GetMemoryUsage();
-
-
 
 private:
     ImFont* iconsFont;
@@ -45,10 +41,12 @@ private:
     fs::path m_SelectedPath;
     ImVec4 m_WindowBackground = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+
 protected:
     void DrawMenu();
     void DrawContent();
     void DrawColorPicker(std::string_view label);
+
 };
 
 

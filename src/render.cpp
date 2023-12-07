@@ -1,5 +1,40 @@
 #include "render.hpp"
 
+bool WindowClass::Initialize() {
+    // Initialize window
+    IMGUI_CHECKVERSION();
+    ImGuiIO& io = ImGui::GetIO();
+
+    io.LogFilename = nullptr;
+    io.IniFilename = nullptr;
+
+    // Initialize history vectors
+    cpuHistory.resize(100, 0.0f); // Assuming a fixed number of data points for the graph
+    memoryHistory.resize(100, 0.0f);
+
+    // Load font
+    wchar_t exePath[MAX_PATH];
+    GetModuleFileNameW(nullptr, exePath, MAX_PATH);
+    fs::path fontPath = fs::path(exePath).parent_path().parent_path() / "icons" / "Roboto-Regular.ttf";
+    io.Fonts->AddFontFromFileTTF(fontPath.string().c_str(), 18.0f);
+
+    //Load Icon from Fontawesome
+    static const ImWchar icon_ranges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
+    ImFontConfig icons_config;
+    icons_config.MergeMode = true;
+    icons_config.PixelSnapH = true;
+    icons_config.OversampleH = 3;
+    icons_config.OversampleV = 3;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    iconsFont = io.Fonts->AddFontFromMemoryCompressedTTF(font_awesome_data, font_awesome_size, 19.5f, &icons_config, icon_ranges);
+
+    ImGuiStyle style = ImGui::GetStyle();
+    auto& colors = style.Colors;
+
+    return true;
+}
+
 void WindowClass::Draw(std::string_view label)
 {
     constexpr static auto window_flags =
@@ -28,49 +63,10 @@ void WindowClass::Draw(std::string_view label)
     ImGui::Text("System Information:");
     ImGui::Separator();
 
-    // Display CPU Usage
-    float cpuUsage = GetCPUUsage();
-    ImGui::Text("CPU Usage: %.2f%%", cpuUsage);
-
-    // Display Memory Usage
-    size_t memoryUsage = GetMemoryUsage();
-    ImGui::Text("Memory Usage: %zu MB", memoryUsage / (1024 * 1024));
-
     // End columns
     ImGui::Columns(1);
 
     ImGui::End();
-}
-
-bool WindowClass::Initialize() {
-    // Initialize window
-    IMGUI_CHECKVERSION();
-    ImGuiIO& io = ImGui::GetIO();
-
-    io.LogFilename = nullptr;
-    io.IniFilename = nullptr;
-
-    // Load font
-    wchar_t exePath[MAX_PATH];
-    GetModuleFileNameW(nullptr, exePath, MAX_PATH);
-    fs::path fontPath = fs::path(exePath).parent_path().parent_path() / "icons" / "Roboto-Regular.ttf";
-    io.Fonts->AddFontFromFileTTF(fontPath.string().c_str(), 18.0f);
-
-    //Load Icon from Fontawesome
-    static const ImWchar icon_ranges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
-    ImFontConfig icons_config;
-    icons_config.MergeMode = true;
-    icons_config.PixelSnapH = true;
-    icons_config.OversampleH = 3;
-    icons_config.OversampleV = 3;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    iconsFont = io.Fonts->AddFontFromMemoryCompressedTTF(font_awesome_data, font_awesome_size, 19.5f, &icons_config, icon_ranges);
-
-    ImGuiStyle style = ImGui::GetStyle();
-    auto& colors = style.Colors;
-
-    return true;
 }
 
 void WindowClass::DrawMenu()
@@ -142,35 +138,4 @@ void WindowClass::render(WindowClass &window) {
     window.Draw("Sum Explorer");
 }
 
-float WindowClass::GetCPUUsage()
-{
-    ULARGE_INTEGER li1, li2;
-    FILETIME ft_SysIdle, ft_SysKernel, ft_SysUser;
-    if(GetSystemTimes(&ft_SysIdle, &ft_SysKernel, &ft_SysUser))
-    {
-        li1.LowPart = ft_SysKernel.dwLowDateTime;
-        li1.HighPart = ft_SysKernel.dwHighDateTime;
 
-        li2.LowPart = ft_SysUser.dwLowDateTime;
-        li2.HighPart = ft_SysUser.dwHighDateTime;
-
-        auto kernelTime = li1.QuadPart;
-        auto userTime = li2.QuadPart;
-
-        // Calculate CPU usage percentage
-        auto totalTime = kernelTime + userTime;
-        auto idleTime = ft_SysIdle.dwHighDateTime | ft_SysIdle.dwLowDateTime;
-        auto usageTime = totalTime - idleTime;
-
-        return static_cast<float>(usageTime) / totalTime * 100.0f;
-    }
-    return 0.f;
-}
-
-size_t WindowClass::GetMemoryUsage() {
-    PROCESS_MEMORY_COUNTERS_EX pmc;
-    if (GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc))) {
-        return static_cast<size_t>(pmc.WorkingSetSize);
-    }
-    return 0;
-}

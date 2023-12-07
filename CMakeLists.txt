@@ -40,7 +40,7 @@ find_package(OpenGL REQUIRED)
 add_executable(${PROJECT_NAME}
         src/main.cpp
         src/render.cpp
-        src/main.cpp)
+        src/main.cpp src/cpu_usage.cpp src/cpu_usage.h)
 
 add_compile_definitions(NOMINMAX)
 
