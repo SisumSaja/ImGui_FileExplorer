@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.22)
 
 project(
-    "FileExplorerImGui"
-    VERSION 1.0.0
-    LANGUAGES C CXX)
+        "FileExplorerImGui"
+        VERSION 1.0.0
+        LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -29,6 +29,7 @@ include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 #include folder?
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IconFontCppHeaders)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/icons)
+include_directories(${OPENGL_INCLUDE_DIR})  # Add this line to include OpenGL headers
 
 find_package(fmt CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
@@ -37,21 +38,21 @@ find_package(implot CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_executable(${PROJECT_NAME}
-    src/main.cpp
-    
-    icons/font.hpp "src/menu.hpp" src/menu.cpp)
+        src/main.cpp
+        src/render.cpp
+        src/main.cpp)
 
 add_compile_definitions(NOMINMAX)
 
 target_set_warnings(TARGET ${PROJECT_NAME}
-    ENABLE ${ENABLE_WARNINGS}
-    AS_ERRORS ${ENABLE_WARNINGS_AS_ERRORS})
+        ENABLE ${ENABLE_WARNINGS}
+        AS_ERRORS ${ENABLE_WARNINGS_AS_ERRORS})
 # add_clang_tidy_msvc_to_target(${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
+target_include_directories(${PROJECT_NAME} PUBLIC icons/)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt-header-only)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 target_link_libraries(${PROJECT_NAME} PRIVATE implot::implot)
