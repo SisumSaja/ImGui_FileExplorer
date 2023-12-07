@@ -9,14 +9,18 @@
 #include "font.hpp"
 #include "font_awesome.h"
 
-class WindowClass
+class ExplorerMenu
 {
 public:
-    WindowClass()
+    ExplorerMenu() :
+        iconsFont(nullptr)
     {
-        
     }
 
-private:
+public:
+    void Render();
     bool Initialize(GLFWwindow* window);
+
+private:
+    ImFont* iconsFont;
 };

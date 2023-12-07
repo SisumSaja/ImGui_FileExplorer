@@ -1,14 +1,15 @@
 #include "menu.hpp"
 
 
-bool WindowClass::Initialize(GLFWwindow *window)
+bool ExplorerMenu::Initialize(GLFWwindow *window)
 {
 
     //Initialize window
-
     IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
+
+    io.LogFilename = nullptr;
+    io.IniFilename = nullptr;
 
     // set imgui to for openGL
     ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -24,7 +25,7 @@ bool WindowClass::Initialize(GLFWwindow *window)
     icons_config.OversampleH = 3;
     icons_config.OversampleV = 3;
 
-     io.Fonts->AddFontFromMemoryCompressedTTF(font_awesome_data, font_awesome_size, 19.5f, &icons_config, icon_ranges);
+     iconsFont = io.Fonts->AddFontFromMemoryCompressedTTF(font_awesome_data, font_awesome_size, 19.5f, &icons_config, icon_ranges);
 
     // Customize ImGui style
     ImGuiStyle& style = ImGui::GetStyle();
@@ -48,6 +49,23 @@ bool WindowClass::Initialize(GLFWwindow *window)
     colors[ImGuiCol_FrameBgHovered] = ImColor(26, 26, 26);
 
     return true;
+}
 
-    return false;
+void ExplorerMenu::Render()
+{
+
+    int static index = 0;
+    ImGui::SetNextWindowSize({634, 435});
+    ImGui::Begin("SiSum Explorer", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
+
+    ImVec2 windowPos{ImGui::GetWindowPos()};
+    ImVec2 windowSize{ImGui::GetWindowSize()};
+    ImVec2 cursorPos{ImGui::GetCursorPos()};
+//    ImVec2 imageSize{770/2, 78};
+
+    ImGui::PushFont(iconsFont);
+    ImGui::Text(ICON_FA_FOLDER);
+    ImGui::PopFont();
+    ImGui::End();
+
 }
