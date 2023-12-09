@@ -1,7 +1,14 @@
 #include <cstdint>
 #include <filesystem>
+#include <Windows.h>
+#include <Psapi.h>
 
-#include "include.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_opengl3_loader.h"
+#include <imgui_impl_win32.h>
+#include <imgui.h>
+#include <implot.h>
 
 #if defined(IMGUI_IMPL_OPENGL_ES2)
 #include <GLES2/gl2.h>
@@ -113,7 +120,7 @@ int main(int, char **)
         ImGui::NewFrame();
         ImPlot::CreateContext();
 
-        WindowClass::render(SumExplorer);
+        WindowClass::Render(SumExplorer);
 
         ImGui::Render();
         int display_w, display_h;

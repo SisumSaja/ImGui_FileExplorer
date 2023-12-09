@@ -1,5 +1,10 @@
 #pragma once
-#include "include.h"
+
+#include "imgui_impl_opengl3_loader.h"
+#include "font_awesome.h"
+#include "font_awesome.cpp"
+#include <imgui.h>
+#include <filesystem>
 
 namespace fs = std::filesystem;
 
@@ -7,16 +12,10 @@ class WindowClass
 {
 
 public:
-    WindowClass() :
-        iconsFont(nullptr),
-        m_CurrentPath(fs::current_path()),
-        m_SelectedPath(fs::path{})
-    {
-
-    }
+    WindowClass();
 public:
     void Draw(std::string_view label);
-    static void render(WindowClass &window_obj);
+    static void Render(WindowClass &window_obj);
     bool Initialize();
 
 private:
@@ -28,6 +27,7 @@ private:
 protected:
     void DrawMenu();
     void DrawContent();
+    void OpenWithVSCode(const fs::path& filePath);
 
 };
 

@@ -31,6 +31,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} PUBLIC src/lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/icons)
 include_directories(${OPENGL_INCLUDE_DIR})
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/icons/Roboto.ttf ${CMAKE_CURRENT_BINARY_DIR}/Roboto.ttf COPYONLY)
+
 find_package(fmt CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
@@ -40,10 +42,7 @@ find_package(OpenGL REQUIRED)
 add_executable(${PROJECT_NAME}
         src/main.cpp
         src/render.cpp
-        src/main.cpp
-        src/cpu_usage.cpp
-        src/cpu_usage.h
-        src/lib/include.h
+        src/main.cpp     
         src/lib/imgui_impl_win32.h
         src/lib/json.hpp
         )
