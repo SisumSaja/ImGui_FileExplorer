@@ -129,7 +129,6 @@ void WindowClass::DrawContent()
             {
                 OpenWithVSCode(entry.path());
             }
-
             ImGui::EndPopup();
         }
 
