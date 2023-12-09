@@ -27,9 +27,9 @@ set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CAC
 include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
 #include folder?
-#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IconFontCppHeaders)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} PUBLIC src/lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/icons)
-include_directories(${OPENGL_INCLUDE_DIR})  # Add this line to include OpenGL headers
+include_directories(${OPENGL_INCLUDE_DIR})
 
 find_package(fmt CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
@@ -40,7 +40,13 @@ find_package(OpenGL REQUIRED)
 add_executable(${PROJECT_NAME}
         src/main.cpp
         src/render.cpp
-        src/main.cpp src/cpu_usage.cpp src/cpu_usage.h)
+        src/main.cpp
+        src/cpu_usage.cpp
+        src/cpu_usage.h
+        src/lib/include.h
+        src/lib/imgui_impl_win32.h
+        src/lib/json.hpp
+        )
 
 add_compile_definitions(NOMINMAX)
 
@@ -50,9 +56,12 @@ target_set_warnings(TARGET ${PROJECT_NAME}
 # add_clang_tidy_msvc_to_target(${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
+target_include_directories(${PROJECT_NAME} PUBLIC src/lib)
 target_include_directories(${PROJECT_NAME} PUBLIC icons/)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt-header-only)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 target_link_libraries(${PROJECT_NAME} PRIVATE implot::implot)
+target_link_libraries(${PROJECT_NAME} PRIVATE pdh.lib)
+

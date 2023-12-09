@@ -1,21 +1,5 @@
 #pragma once
-
-#include <cstdint>
-#include <string_view>
-#include <iostream>
-#include <fmt/format.h>
-#include <imgui.h>
-#include <implot.h>
-#include "GLFW/glfw3.h"
-#include <Windows.h>
-#include <Psapi.h>
-
-#include "font_awesome.h"
-#include "font_awesome.cpp"
-#include "font.hpp"
-#include <filesystem>
-#include <string_view>
-#include <Windows.h>
+#include "include.h"
 
 namespace fs = std::filesystem;
 
@@ -39,13 +23,11 @@ private:
     ImFont* iconsFont;
     fs::path m_CurrentPath;
     fs::path m_SelectedPath;
-    ImVec4 m_WindowBackground = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 
 protected:
     void DrawMenu();
     void DrawContent();
-    void DrawColorPicker(std::string_view label);
 
 };
 
