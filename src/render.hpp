@@ -1,8 +1,9 @@
 #pragma once
 
+#include <Windows.h>
+#include <vector>
+#include <string>
 #include "imgui_impl_opengl3_loader.h"
-#include "font_awesome.h"
-#include "font_awesome.cpp"
 #include <imgui.h>
 #include <filesystem>
 

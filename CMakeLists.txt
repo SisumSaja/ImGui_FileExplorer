@@ -28,10 +28,10 @@ include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
 #include folder?
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} PUBLIC src/lib)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/icons)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/fonts)
 include_directories(${OPENGL_INCLUDE_DIR})
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/icons/Roboto.ttf ${CMAKE_CURRENT_BINARY_DIR}/Roboto.ttf COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/fonts/Roboto.ttf ${CMAKE_CURRENT_BINARY_DIR}/Roboto.ttf COPYONLY)
 
 find_package(fmt CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
@@ -56,7 +56,7 @@ target_set_warnings(TARGET ${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/lib)
-target_include_directories(${PROJECT_NAME} PUBLIC icons/)
+target_include_directories(${PROJECT_NAME} PUBLIC fonts/)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt-header-only)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)

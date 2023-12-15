@@ -1,8 +1,5 @@
-#include <Windows.h>
-#include <vector>
-#include <string>
-
 #include "render.hpp"
+#include "IconsFontAwesome6.h"
 
 WindowClass::WindowClass() :
         iconsFont(nullptr),
@@ -49,18 +46,16 @@ bool WindowClass::Initialize() {
     io.Fonts->AddFontFromFileTTF(fontPath.string().c_str(), 18.0f);
 
     //Load Icon from Fontawesome
-    static const ImWchar icon_ranges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
-    ImFontConfig icons_config;
-    icons_config.MergeMode = true;
-    icons_config.PixelSnapH = true;
-    icons_config.OversampleH = 3;
-    icons_config.OversampleV = 3;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    iconsFont = io.Fonts->AddFontFromMemoryCompressedTTF(font_awesome_data, font_awesome_size, 19.5f, &icons_config, icon_ranges);
-
-    ImGuiStyle style = ImGui::GetStyle();
-    auto& colors = style.Colors;
+    static const ImWchar iconRanges[] = {ICON_MIN_FA, ICON_MAX_16_FA, 0};
+    float iconSize = 25.f;
+    ImFontConfig iconConfigs;
+    iconConfigs.MergeMode = true;
+    iconConfigs.PixelSnapH = true;
+    iconConfigs.OversampleH = 3;
+    iconConfigs.OversampleV = 3;
+    iconConfigs.GlyphMinAdvanceX = iconSize;
+    io.Fonts->AddFontFromFileTTF(FONT_ICON_FILE_NAME_FAR,
+                                 iconSize, &iconConfigs, iconRanges);
 
     return true;
 }
